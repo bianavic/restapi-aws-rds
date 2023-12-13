@@ -18,9 +18,9 @@ public class CustomExceptionHandlerHateoas {
     }
 
     @ResponseBody
-    @ExceptionHandler(EmployeeNotFoundExceptionHateoas.class)
+    @ExceptionHandler(CustomerNotFoundExceptionHateoas.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String employeeNotFoundHandler(EmployeeNotFoundExceptionHateoas ex) {
+    String customerNotFoundHandler(CustomerNotFoundExceptionHateoas ex) {
         final String message = ex.getMessage();
         return message;
     }

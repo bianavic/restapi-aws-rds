@@ -10,32 +10,33 @@
 - rds aws
 - postgresql
 
-## Employee
+## Customer
 
-| API ROUTE		                       | DESCRIPTION                | STATUS |
-|:----------------------------------|:---------------------------|:-------|
-| [POST] /employees/add             | Add a new employees        | 201    |
-| [GET] /employees/employee/{id}    | Retrieve an employee by ID | 200    |
-| [GET] /employees	                 | Retrieve all the employees   | 200    |
-| [PUT] /employees	                 | Update an user by ID           | 200    |
-| [DELETE] /employees/employee/{id} | Delete an user by ID      | 204    |
+| API ROUTE		                       | DESCRIPTION                  | STATUS |
+|:----------------------------------|:-----------------------------|:-------|
+| [POST] /customers/add             | Add a new customer           | 201    |
+| [GET] /customers/customer/{id}    | Retrieve a customer by ID    | 200    |
+| [GET] /customers	                 | Retrieve all the customers   | 200    |
+| [PUT] /customers	                 | Update a customer by ID      | 200    |
+| [DELETE] /customers/customer/{id} | Delete a customer by ID          | 204    |
 
-#### Employee Database Loaded on Start
 
-| id | address | name | role |
+#### Pre-Loaded data into Customer Database
+
+| id | address | name | occupation |
 | :--- | :--- | :--- | :--- |
-| 1 | avenida silveira dutra 1002 | Maria Silva | Chef |
-| 2 | rua joao freire 231 | John Dutra | Mecanico |
-| 3 | The shine | Bilbo Baggins | thief |
+| 1 | avenida silveira dutra 1002 | Maria Silva | Engineer |
+| 2 | rua joao freire 231 | John Dutra | Teacher |
+| 3 | The shine | Bilbo Baggins | Chef |
 
 
-#### add employee
+#### add customer
 ```bash
-curl --location 'http://localhost:8001/employees/add' \
+curl --location 'http://localhost:8001/customers/add' \
 --header 'Content-Type: application/json' \
 --data '{
     "name": "Joao Carlos",
-    "role": "Thief",
+    "occupation": "Thief",
     "address": "Rua Test 51"
 }'
 ```
@@ -44,14 +45,14 @@ curl --location 'http://localhost:8001/employees/add' \
 {
     "id": 4,
     "name": "Joao Carlos",
-    "role": "Thief",
+    "occupation": "Thief",
     "address": "Rua Test 51"
 }
 ```
 
-#### get all employees
+#### get all customers
 ```bash
-curl --location 'http://localhost:8001/employees/all'
+curl --location 'http://localhost:8001/customers/all'
 ```
 ###### 200 OK
 ``` json
@@ -59,99 +60,100 @@ curl --location 'http://localhost:8001/employees/all'
     {
         "id": 1,
         "name": "Maria Silva",
-        "role": "Chef",
+        "occupation": "Engineer",
         "address": "avenida silveira dutra 1002",
         "links": [
             {
                 "rel": "self",
-                "href": "http://localhost:8001/employees/employee/1"
+                "href": "http://localhost:8001/customers/customer/1"
             }
         ]
     },
     {
         "id": 2,
         "name": "John Dutra",
-        "role": "Mecanico",
+        "occupation": "Teacher",
         "address": "rua joao freire 231",
         "links": [
             {
                 "rel": "self",
-                "href": "http://localhost:8001/employees/employee/2"
+                "href": "http://localhost:8001/customers/customer/2"
             }
         ]
     },
     {
         "id": 3,
         "name": "Bilbo Baggins",
-        "role": "thief",
+        "occupation": "Chef",
         "address": "The shine",
         "links": [
             {
                 "rel": "self",
-                "href": "http://localhost:8001/employees/employee/3"
+                "href": "http://localhost:8001/customers/customer/3"
             }
         ]
     },
     {
         "id": 4,
-        "name": "Joao Carlos",
-        "role": "Thief",
-        "address": "Rua Test 51",
+        "name": "Alice Morgan",
+        "occupation": "Teacher",
+        "address": "Street Test 234",
         "links": [
             {
                 "rel": "self",
-                "href": "http://localhost:8001/employees/employee/4"
+                "href": "http://localhost:8001/customers/customer/4"
             }
         ]
     }
 ]
 ```
 
-#### get an employee by ID
+#### get a customer by ID
 ```bash
-curl --location 'http://localhost:8001/employees/employee/2'
+curl --location 'http://localhost:8001/customers/customer/2'
 ```
 ###### 200 OK
 ``` json
 {
     "id": 2,
     "name": "John Dutra",
-    "role": "Mecanico",
+    "occupation": "Teacher",
     "address": "rua joao freire 231",
     "_links": {
-        "Employee list": {
-            "href": "http://localhost:8001/employees/all"
+        "Customers list": {
+            "href": "http://localhost:8001/customers/all"
         },
         "self": {
-            "href": "http://localhost:8001/employees/employee/2"
+            "href": "http://localhost:8001/customers/customer/2"
         }
     }
 }
 ```
 
-#### update an employee by ID
+#### update a customer by ID
 ```bash
-curl --location --request PUT 'http://localhost:8001/employees/update/4' \
+curl --location --request PUT 'http://localhost:8001/customers/update/4' \
 --header 'Content-Type: application/json' \
 --data '{
-    "name": "Uodate Joao Carlos",
-    "role": "Teacher",
-    "address": "Rua Test 51"
+    "id": 4,
+    "name": "Alice Morgan",
+    "occupation": "Tcher",
+    "address": "Street Test 234"
 }'
 ```
 ###### 200 OK
 ``` json
 {
-    "id": 5,
-    "name": "Uodate Joao Carlos",
-    "role": "Teacher",
-    "address": "Rua Test 51"
+    "id": 4,
+    "name": "Alice Morgan",
+    "occupation": "Teacher",
+    "address": "Street Test 234"
 }
 ```
 
-#### delete an employee by ID
+#### delete a customer by ID
 ```bash
-curl --location --request DELETE 'http://localhost:8001/employees/employee/4'
+curl --location --request DELETE 'http://localhost:8001/customers/customer/5'
 ```
 ###### 204 NO CONTENT
 ``` json
@@ -160,22 +162,23 @@ curl --location --request DELETE 'http://localhost:8001/employees/employee/4'
 
 ## Order
 
-| API ROUTE		                      | DESCRIPTION             | STATUS |
-|:---------------------------------|:------------------------|:-------|
-| [POST] /orders/add               | Add a new order         | 201    |
-| [GET] /orders/order/{id}         | Retrieve an order by ID | 200    |
-| [GET] /orders	                   | Retrieve all the orders | 200    |
-| [PUT] /orders	                   | Update an order by ID    | 200    |
-| [DELETE] /orders/employee/{id}   | Delete an order by ID    | 204    |
+| API ROUTE		                  | DESCRIPTION                         | STATUS |
+|:-----------------------------|:------------------------------------|:-------|
+| [POST] /orders/add           | Add a new order                     | 201    |
+| [GET] /orders/order/{id}     | Retrieve an order by ID             | 200    |
+| [GET] /orders	               | Retrieve all the orders             | 200    |
+| [PUT] /orders	               | Update an order by ID               | 200    |
+| [PUT] /orders/{id}/complete	 | Update an order status to completed | 200    |
+| [PUT] /orders/{id}/cancel	   | Update an order status to cancelled | 200    |
+| [DELETE] /orders/order/{id}  | Delete an order by ID               | 204    |
 
-#### Order Database
+#### Pre-Loaded data into Order Database
 
 | status | id | description |
-|:-------|:---| :--- |
-| 1      | 1  | review |
-| 0      | 2  | travel |
-| 1      | 3  | sale |
-| 2      | 4  | sale |
+| :--- | :--- | :--- |
+| 1 | 1 | review |
+| 2 | 2 | travel |
+| 0 | 3 | sale |
 
 #### add an order
 ```bash
@@ -351,3 +354,10 @@ curl --location --request DELETE 'http://localhost:8001/orders/order/4'
 
 ```
 
+## Exceptions
+
+| EXCEPTION NAME	                  | DESCRIPTION	                                            | HTTP STATUS CODE |
+|:---------------------------------|:----------------------------------------------------------|:-----------------|
+| CustomerNotFoundExceptionHateoas | Could not find id                                         | 404              |
+| OrderNotFoundExceptionHateoas    | Could not find id                                         | 404              |
+| Method Not Allowed		    | You can't complete the task, the order has a COMPLETED status |  405             |

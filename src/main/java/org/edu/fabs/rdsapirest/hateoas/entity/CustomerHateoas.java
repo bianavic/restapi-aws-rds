@@ -11,25 +11,25 @@ import org.springframework.hateoas.RepresentationModel;
 import java.util.Objects;
 
 @Entity
-@Table(name = "EMPLOYEE")
-public class EmployeeHateoas extends RepresentationModel<OrderHateoasModel> {
+@Table(name = "CUSTOMER")
+public class CustomerHateoas extends RepresentationModel<OrderHateoasModel> {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
-    private String role;
+    private String occupation;
     private String address;
 
-    public EmployeeHateoas(String name, String role, String address) {
+    public CustomerHateoas(String name, String occupation, String address) {
         this.id = id;
         this.name = name;
-        this.role = role;
+        this.occupation = occupation;
         this.address = address;
     }
 
-    public EmployeeHateoas() {
+    public CustomerHateoas() {
 
     }
 
@@ -49,12 +49,12 @@ public class EmployeeHateoas extends RepresentationModel<OrderHateoasModel> {
         this.name = name;
     }
 
-    public String getRole() {
-        return role;
+    public String getOccupation() {
+        return occupation;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setOccupation(String role) {
+        this.occupation = role;
     }
 
     public String getAddress() {
@@ -69,22 +69,22 @@ public class EmployeeHateoas extends RepresentationModel<OrderHateoasModel> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        EmployeeHateoas employee = (EmployeeHateoas) o;
-        return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(role, employee.role) && Objects.equals(address, employee.address);
+        CustomerHateoas employee = (CustomerHateoas) o;
+        return Objects.equals(id, employee.id) && Objects.equals(name, employee.name) && Objects.equals(occupation, employee.occupation) && Objects.equals(address, employee.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, role, address);
+        return Objects.hash(id, name, occupation, address);
     }
 
 
     @Override
     public String toString() {
-        return "Employee{" +
+        return "Customer{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
+                ", occupation='" + occupation + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }
