@@ -1,7 +1,6 @@
 package org.edu.fabs.rdsapirest.hateoas.controller;
 
 import org.edu.fabs.rdsapirest.hateoas.entity.EmployeeHateoas;
-import org.edu.fabs.rdsapirest.hateoas.exceptions.EmployeeNotFoundExceptionHateoas;
 import org.edu.fabs.rdsapirest.hateoas.repository.EmployeeRepositoryHateoas;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -69,7 +68,6 @@ public class EmployeeControllerHateoas {
         return employeeRepositoryHateoas.save(newEmployee);
     }
 
-    // modificacao partial
     @PutMapping("/update/{id}")
     public EmployeeHateoas replaceEmployee(@PathVariable Long id, @RequestBody EmployeeHateoas newEmployee) {
         return employeeRepositoryHateoas.findById(id).map(

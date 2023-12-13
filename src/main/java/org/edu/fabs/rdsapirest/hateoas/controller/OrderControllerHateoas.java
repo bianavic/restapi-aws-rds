@@ -1,8 +1,12 @@
 package org.edu.fabs.rdsapirest.hateoas.controller;
 
 import org.edu.fabs.rdsapirest.hateoas.entity.OrderHateoasModel;
+import org.edu.fabs.rdsapirest.hateoas.entity.Status;
+import org.edu.fabs.rdsapirest.hateoas.exceptions.OrderNotFoundExceptionHateoas;
 import org.edu.fabs.rdsapirest.hateoas.repository.OrderRepositoryHateoas;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -79,6 +83,40 @@ public class OrderControllerHateoas {
             newOrder.setId(id);
             return orderRepositoryHateoas.save(newOrder);
         });
+    }
+
+    @PutMapping("/{id}/cancel")
+    ResponseEntity<?> cancelOrderById(@PathVariable Long id) {
+        OrderHateoasModel cancelledOrder = orderRepositoryHateoas.findById(id).orElseThrow(() -> new OrderNotFoundExceptionHateoas(id));
+        if (cancelledOrder.getStatus() == Status.IN_PROGRESS) {
+            cancelledOrder.setStatus(Status.CANCELLED);
+            cancelledOrder.add(linkTo(methodOn(OrderControllerHateoas.class).getOrderById(id)).withSelfRel());
+            cancelledOrder.add(linkTo(methodOn(OrderControllerHateoas.class).getAllOrders()).withRel("Order list"));
+            orderRepositoryHateoas.save(cancelledOrder);
+            return new ResponseEntity<>(cancelledOrder, HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body("You can't complete the task, the order has a " +
+                        cancelledOrder.getStatus() + " status");
+    }
+
+    @PutMapping("/{id}/complete")
+    ResponseEntity<?> completeOrderById(@PathVariable Long id) {
+        OrderHateoasModel completedOrder = orderRepositoryHateoas.findById(id).orElseThrow(() -> new OrderNotFoundExceptionHateoas(id));
+        if (completedOrder.getStatus() == Status.IN_PROGRESS) {
+            completedOrder.setStatus(Status.COMPLETED);
+            completedOrder.add(linkTo(methodOn(OrderControllerHateoas.class).getOrderById(id)).withSelfRel());
+            completedOrder.add(linkTo(methodOn(OrderControllerHateoas.class).getAllOrders()).withRel("Order list"));
+            orderRepositoryHateoas.save(completedOrder);
+            return new ResponseEntity<>(completedOrder, HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED)
+                .header(HttpHeaders.CONTENT_TYPE,
+                        MediaTypes.HTTP_PROBLEM_DETAILS_JSON_VALUE)
+                .body("You can't complete the task, the order has a " +
+                        completedOrder.getStatus() + " status");
     }
 
     @DeleteMapping("/order/{id}")

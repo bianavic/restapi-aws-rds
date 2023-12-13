@@ -3,6 +3,7 @@
 ### tools:
 - linux
 - intellij
+- java 17
 - spring data
 - spring web
 - spring hateoas
@@ -18,6 +19,14 @@
 | [GET] /employees	                 | Retrieve all the employees   | 200    |
 | [PUT] /employees	                 | Update an user by ID           | 200    |
 | [DELETE] /employees/employee/{id} | Delete an user by ID      | 204    |
+
+#### Employee Database Loaded on Start
+
+| id | address | name | role |
+| :--- | :--- | :--- | :--- |
+| 1 | avenida silveira dutra 1002 | Maria Silva | Chef |
+| 2 | rua joao freire 231 | John Dutra | Mecanico |
+| 3 | The shine | Bilbo Baggins | thief |
 
 
 #### add employee
@@ -159,6 +168,15 @@ curl --location --request DELETE 'http://localhost:8001/employees/employee/4'
 | [PUT] /orders	                   | Update an order by ID    | 200    |
 | [DELETE] /orders/employee/{id}   | Delete an order by ID    | 204    |
 
+#### Order Database
+
+| status | id | description |
+|:-------|:---| :--- |
+| 1      | 1  | review |
+| 0      | 2  | travel |
+| 1      | 3  | sale |
+| 2      | 4  | sale |
+
 #### add an order
 ```bash
 curl --location 'http://localhost:8001/orders/add' \
@@ -272,12 +290,56 @@ curl --location --request PUT 'http://localhost:8001/orders/update/4' \
 }
 ```
 
-#### update an order by ID
+#### [complete] update status order by ID
 ```bash
+curl --location --request PUT 'http://localhost:8001/orders/4/complete' \
+--header 'Content-Type: application/json' \
+--data '{
+    "status": "COMPLETED",
+    "description": "review"
+}'
 ```
 ###### 200 OK
 ``` json
+{
+    "id": 4,
+    "status": "COMPLETED",
+    "description": "review",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8001/orders/order/4"
+        },
+        "Order list": {
+            "href": "http://localhost:8001/orders/all"
+        }
+    }
+}
+```
 
+#### [cancel] update status order by ID
+```bash
+curl --location --request PUT 'http://localhost:8001/orders/5/cancel' \
+--header 'Content-Type: application/json' \
+--data '{
+    "status": "COMPLETED",
+    "description": "review"
+}'
+```
+###### 200 OK
+``` json
+{
+    "id": 5,
+    "status": "CANCELLED",
+    "description": "shop",
+    "_links": {
+        "self": {
+            "href": "http://localhost:8001/orders/order/5"
+        },
+        "Order list": {
+            "href": "http://localhost:8001/orders/all"
+        }
+    }
+}
 ```
 
 #### delete an order by ID
@@ -289,19 +351,3 @@ curl --location --request DELETE 'http://localhost:8001/orders/order/4'
 
 ```
 
-
-#### Employee Database
-
-| id | address | name | role |
-| :--- | :--- | :--- | :--- |
-| 1 | avenida silveira dutra 1002 | Maria Silva | Chef |
-| 2 | rua joao freire 231 | John Dutra | Mecanico |
-| 3 | The shine | Bilbo Baggins | thief |
-
-#### Order Database
-
-| status | id | description |
-| :--- | :--- | :--- |
-| 1 | 1 | review |
-| 0 | 2 | travel |
-| 0 | 3 | sale |
