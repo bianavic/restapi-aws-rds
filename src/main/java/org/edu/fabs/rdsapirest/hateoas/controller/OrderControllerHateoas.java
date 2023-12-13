@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -63,12 +64,13 @@ public class OrderControllerHateoas {
     }
 
     @PostMapping("/add")
+    @ResponseStatus(value = HttpStatus.CREATED)
     OrderHateoasModel newOrder(@RequestBody OrderHateoasModel newOrder) {
         return orderRepositoryHateoas.save(newOrder);
     }
 
-    @PutMapping("/{id}")
-    OrderHateoasModel replaceOrder(@RequestBody OrderHateoasModel newOrder, Long id) {
+    @PutMapping("/update/{id}")
+    OrderHateoasModel replaceOrder(@PathVariable Long id, @RequestBody OrderHateoasModel newOrder) {
         return orderRepositoryHateoas.findById(id).map(order -> {
             order.setDescription(newOrder.getDescription());
             order.setStatus(newOrder.getStatus());
@@ -80,6 +82,7 @@ public class OrderControllerHateoas {
     }
 
     @DeleteMapping("/order/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     void deleteOrder(@PathVariable long id) {
         orderRepositoryHateoas.deleteById(id);
     }

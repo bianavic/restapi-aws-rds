@@ -13,11 +13,11 @@
 
 | API ROUTE		                       | DESCRIPTION                | STATUS |
 |:----------------------------------|:---------------------------|:-------|
-| [POST] /employees/add             | Add a new employees        | 200    |
+| [POST] /employees/add             | Add a new employees        | 201    |
 | [GET] /employees/employee/{id}    | Retrieve an employee by ID | 200    |
 | [GET] /employees	                 | Retrieve all the employees   | 200    |
 | [PUT] /employees	                 | Update an user by ID           | 200    |
-| [DELETE] /employees/employee/{id} | Delete an user by ID      | 200    |
+| [DELETE] /employees/employee/{id} | Delete an user by ID      | 204    |
 
 
 #### add employee
@@ -30,7 +30,7 @@ curl --location 'http://localhost:8001/employees/add' \
     "address": "Rua Test 51"
 }'
 ```
-###### 200 OK
+###### 201 CREATED
 ``` json
 {
     "id": 4,
@@ -122,17 +122,29 @@ curl --location 'http://localhost:8001/employees/employee/2'
 
 #### update an employee by ID
 ```bash
+curl --location --request PUT 'http://localhost:8001/employees/update/4' \
+--header 'Content-Type: application/json' \
+--data '{
+    "name": "Uodate Joao Carlos",
+    "role": "Teacher",
+    "address": "Rua Test 51"
+}'
 ```
 ###### 200 OK
 ``` json
-
+{
+    "id": 5,
+    "name": "Uodate Joao Carlos",
+    "role": "Teacher",
+    "address": "Rua Test 51"
+}
 ```
 
 #### delete an employee by ID
 ```bash
 curl --location --request DELETE 'http://localhost:8001/employees/employee/4'
 ```
-###### 200 OK
+###### 204 NO CONTENT
 ``` json
 
 ```
@@ -141,11 +153,11 @@ curl --location --request DELETE 'http://localhost:8001/employees/employee/4'
 
 | API ROUTE		                      | DESCRIPTION             | STATUS |
 |:---------------------------------|:------------------------|:-------|
-| [POST] /orders/add               | Add a new order         | 200    |
+| [POST] /orders/add               | Add a new order         | 201    |
 | [GET] /orders/order/{id}         | Retrieve an order by ID | 200    |
 | [GET] /orders	                   | Retrieve all the orders | 200    |
 | [PUT] /orders	                   | Update an order by ID    | 200    |
-| [DELETE] /orders/employee/{id}   | Delete an order by ID    | 200    |
+| [DELETE] /orders/employee/{id}   | Delete an order by ID    | 204    |
 
 #### add an order
 ```bash
@@ -156,7 +168,7 @@ curl --location 'http://localhost:8001/orders/add' \
     "description": "review"
 }'
 ```
-###### 200 OK
+###### 201 CREATED
 ``` json
 {
     "id": 4,
@@ -243,10 +255,21 @@ curl --location 'http://localhost:8001/orders/order/1'
 
 #### update an order by ID
 ```bash
+curl --location --request PUT 'http://localhost:8001/orders/update/4' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": 4,
+    "status": "CANCELLED",
+    "description": "review"
+}'
 ```
 ###### 200 OK
 ``` json
-
+{
+    "id": 4,
+    "status": "CANCELLED",
+    "description": "review"
+}
 ```
 
 #### update an order by ID
@@ -261,7 +284,7 @@ curl --location 'http://localhost:8001/orders/order/1'
 ```bash
 curl --location --request DELETE 'http://localhost:8001/orders/order/4'
 ```
-###### 200 OK
+###### 204 NO CONTENT
 ``` json
 
 ```

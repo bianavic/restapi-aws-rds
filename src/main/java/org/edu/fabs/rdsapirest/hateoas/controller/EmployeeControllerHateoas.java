@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -63,13 +64,14 @@ public class EmployeeControllerHateoas {
     }
 
     @PostMapping("/add")
+    @ResponseStatus(value = HttpStatus.CREATED)
     public EmployeeHateoas addEmployee(@RequestBody EmployeeHateoas newEmployee) {
         return employeeRepositoryHateoas.save(newEmployee);
     }
 
     // modificacao partial
-    @PutMapping("/add")
-    public EmployeeHateoas replaceEmployee(@RequestBody EmployeeHateoas newEmployee, Long id) {
+    @PutMapping("/update/{id}")
+    public EmployeeHateoas replaceEmployee(@PathVariable Long id, @RequestBody EmployeeHateoas newEmployee) {
         return employeeRepositoryHateoas.findById(id).map(
                 employee -> {
                     employee.setName(newEmployee.getName());
@@ -83,6 +85,7 @@ public class EmployeeControllerHateoas {
     }
 
     @DeleteMapping("/employee/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteEmployee(@PathVariable Long id) {
         employeeRepositoryHateoas.deleteById(id);
     }
